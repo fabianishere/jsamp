@@ -3,10 +3,15 @@ package org.faabtech.jsamp;
 import java.util.logging.Logger;
 
 import org.faabtech.jsamp.data.DataProvider;
+import org.faabtech.jsamp.data.impl.ClientListDataProvider;
 import org.faabtech.jsamp.data.impl.InfoDataProvider;
+import org.faabtech.jsamp.data.impl.PlayerDataProvider;
+import org.faabtech.jsamp.data.impl.RuleDataProvider;
 import org.faabtech.jsamp.event.MessageListener;
 import org.faabtech.jsamp.event.SAMPResponseListener;
 import org.faabtech.jsamp.net.Client;
+import org.faabtech.jsamp.server.Player;
+import org.faabtech.jsamp.server.Rule;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelFuture;
@@ -131,13 +136,12 @@ public class SAMPRequest {
 				if (!(e.getMessage() instanceof ChannelBuffer))
 					return;
 				ChannelBuffer buf = (ChannelBuffer) e.getMessage();
+				/**
+				 * Skip the first 11 bytes, it's only shit.
+				 */
+				buf.skipBytes(11);
 				switch (opcode) {
 				case INFO:
-					/**
-					 * Skip the first 11 bytes, it's only shit.
-					 */
-					buf.skipBytes(11);
-
 					/**
 					 * Is the server using a password?
 					 */
@@ -146,7 +150,7 @@ public class SAMPRequest {
 					/**
 					 * Players on the server.
 					 */
-					int players = buf.readUnsignedByte()
+					int playerCount = buf.readUnsignedByte()
 							+ buf.readUnsignedByte();
 
 					/**
@@ -222,12 +226,108 @@ public class SAMPRequest {
 					}
 
 					listener.messageReceived(new InfoDataProvider(password,
-							players, maxPlayers, hostname.toString(), gamemode
-									.toString(), mapname.toString()));
+							playerCount, maxPlayers, hostname.toString(),
+							gamemode.toString(), mapname.toString()));
 
 					break;
+				case RULES:
+					int ruleCount = buf.readUnsignedByte()
+							+ buf.readUnsignedByte();
+
+					Rule[] rules = new Rule[ruleCount];
+
+					for (int i = 0; i < ruleCount; i++) {
+						/**
+						 * Rule name block here.
+						 */
+						int nameLenght = buf.readUnsignedByte();
+
+						String name = "";
+
+						for (int i2 = 0; i2 < nameLenght; i2++)
+							name += (char) buf.readUnsignedByte();
+
+						/**
+						 * Rule value block here.
+						 */
+						int valueLenght = buf.readUnsignedByte();
+
+						String value = "";
+
+						for (int i2 = 0; i2 < valueLenght; i2++)
+							value += (char) buf.readUnsignedByte();
+						rules[i] = new Rule(name, value);
+					}
+					listener.messageReceived(new RuleDataProvider(rules));
+
+					break;
+				case CLIENT_LIST:
+					playerCount = buf.readUnsignedByte()
+							+ buf.readUnsignedByte();
+
+					Player[] players = new Player[playerCount];
+
+					for (int i = 0; i < playerCount; i++) {
+						/**
+						 * Username block here.
+						 */
+						int usernameLenght = buf.readUnsignedByte();
+
+						String username = "";
+
+						for (int i2 = 0; i2 < usernameLenght; i2++)
+							username += (char) buf.readUnsignedByte();
+
+						/**
+						 * Player score block here.
+						 */
+						int score = buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte();
+
+						players[i] = new Player(username, score);
+					}
+					listener.messageReceived(new ClientListDataProvider(players));
+					break;
+				case DETAILED_PLAYER_INFO:
+					playerCount = buf.readUnsignedByte()
+							+ buf.readUnsignedByte();
+
+					players = new Player[playerCount];
+
+					for (int i = 0; i < playerCount; i++) {
+						int playerId = buf.readUnsignedByte();
+
+						int usernameLenght = buf.readUnsignedByte();
+
+						String username = "";
+
+						for (int i2 = 0; i2 < usernameLenght; i2++)
+							username += (char) buf.readUnsignedByte();
+
+						/**
+						 * Player score block here.
+						 */
+						int score = buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte();
+
+						/**
+						 * Player ping block here.
+						 */
+						int ping = buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte()
+								+ buf.readUnsignedByte();
+
+						players[i] = new Player(playerId, username, score, ping);
+					}
+					listener.messageReceived(new PlayerDataProvider(players));
+					break;
 				default:
-					logger.severe("Opcode not supported yet.");
+					logger.severe("Opcode not supported.");
 					System.exit(0);
 					break;
 				}
