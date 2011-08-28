@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import org.faabtech.jsamp.event.MessageListener;
+import org.faabtech.jsamp.exception.MalformedIpException;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap;
 import org.jboss.netty.channel.ChannelFuture;
@@ -87,25 +88,39 @@ public class Client {
 	}
 
 	/**
+	 * Check if the given address and port exists.
+	 * 
+	 * @return <code>true</code> if you can connect to the given address.
+	 *         Otherwise, <code>false</code>
+	 */
+	public boolean canConnect() {
+		future = bootstrap.connect(new InetSocketAddress(this.address,
+				this.port));
+		try {
+			future.await();
+		} catch (InterruptedException e) {
+			return false;
+		}
+		return future.getChannel().isConnected();
+	}
+
+	/**
 	 * Connect to the given address and port.
 	 * 
 	 * @param messageListener
 	 *            Handles client's events.
+	 * @throws Exception 
 	 */
-	public void connect(final MessageListener messageListener) {
+	public void connect(final MessageListener messageListener) throws Exception {
 		this.messageListener = messageListener;
 
 		// Connect to the given address.
 		future = bootstrap.connect(new InetSocketAddress(this.address,
 				this.port));
-
 		// Send the request here.
-		future.addListener(new ChannelFutureListener() {
+		future.await();
 
-			@Override
-			public void operationComplete(ChannelFuture arg0) throws Exception {
-				messageListener.send(arg0);
-			}
-		});
+		messageListener.send(future);
+		
 	}
 }

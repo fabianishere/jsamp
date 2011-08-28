@@ -1,6 +1,7 @@
 package org.faabtech.jsamp.net;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
@@ -28,7 +29,16 @@ public class SAMPHandler extends SimpleChannelUpstreamHandler {
 
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
-		client.messageListener.get(e);
+		try {
+			client.messageListener.get(e);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
+			throws Exception {
+
+	}
 }

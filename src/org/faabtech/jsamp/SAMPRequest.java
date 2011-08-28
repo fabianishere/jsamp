@@ -9,6 +9,8 @@ import org.faabtech.jsamp.data.impl.PlayerDataProvider;
 import org.faabtech.jsamp.data.impl.RuleDataProvider;
 import org.faabtech.jsamp.event.MessageListener;
 import org.faabtech.jsamp.event.SAMPResponseListener;
+import org.faabtech.jsamp.exception.MalformedIpException;
+import org.faabtech.jsamp.exception.NonSupportedOpcodeException;
 import org.faabtech.jsamp.net.Client;
 import org.faabtech.jsamp.server.Player;
 import org.faabtech.jsamp.server.Rule;
@@ -66,12 +68,14 @@ public class SAMPRequest {
 	 * 
 	 * @param listener
 	 *            The SAMP Response listener.
+	 *            
+	 * @throws Exception 
 	 */
-	public void send(final SAMPResponseListener listener) {
+	public void send(final SAMPResponseListener listener) throws Exception {
 		this.client.connect(new MessageListener() {
 
 			@Override
-			public void send(ChannelFuture future) {
+			public void send(ChannelFuture future) throws MalformedIpException {
 				ChannelBuffer buf = ChannelBuffers.buffer(26);
 				/**
 				 * This part denotes that this packet is indeed a SA-MP packet.
@@ -85,8 +89,7 @@ public class SAMPRequest {
 				String[] ip = client.getAddress().split("\\.");
 
 				if (ip.length != 4) {
-					logger.severe("IP is malformed. Terminating..");
-					System.exit(0);
+					throw new MalformedIpException();
 				}
 
 				for (String ipPart : ip) {
@@ -132,7 +135,7 @@ public class SAMPRequest {
 			}
 
 			@Override
-			public void get(MessageEvent e) {
+			public void get(MessageEvent e) throws NonSupportedOpcodeException {
 				if (!(e.getMessage() instanceof ChannelBuffer))
 					return;
 				ChannelBuffer buf = (ChannelBuffer) e.getMessage();
@@ -288,7 +291,8 @@ public class SAMPRequest {
 
 						players[i] = new Player(username, score);
 					}
-					listener.messageReceived(new ClientListDataProvider(players));
+					listener
+							.messageReceived(new ClientListDataProvider(players));
 					break;
 				case DETAILED_PLAYER_INFO:
 					playerCount = buf.readUnsignedByte()
@@ -327,9 +331,7 @@ public class SAMPRequest {
 					listener.messageReceived(new PlayerDataProvider(players));
 					break;
 				default:
-					logger.severe("Opcode not supported.");
-					System.exit(0);
-					break;
+					throw new NonSupportedOpcodeException();
 				}
 			}
 

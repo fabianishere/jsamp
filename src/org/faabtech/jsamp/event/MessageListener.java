@@ -5,8 +5,8 @@ import org.jboss.netty.channel.MessageEvent;
 
 public interface MessageListener {
 
-	public void send(ChannelFuture future);
+	public void send(ChannelFuture future) throws Exception;
 
-	public void get(MessageEvent e);
+	public void get(MessageEvent e) throws Exception;
 
 }
