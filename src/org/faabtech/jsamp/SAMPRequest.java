@@ -22,6 +22,9 @@ import org.jboss.netty.channel.MessageEvent;
 /**
  * Represents a SAMP Server data request.
  * 
+ * For more info about the query mechanism, go to 
+ * 	<a href="http://wiki.sa-mp.com/wiki/Query_Mechanism">http://wiki.sa-mp.com/wiki/Query_Mechanism</a>
+ * 
  * @author Fabian M.
  */
 public class SAMPRequest {
@@ -37,7 +40,7 @@ public class SAMPRequest {
 	private Opcode opcode;
 
 	/**
-	 * Representation of opcodes the Query Mechanism.
+	 * Representation of available query opcodes.
 	 * 
 	 * @author Fabian M.
 	 */
