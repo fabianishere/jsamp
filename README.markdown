@@ -4,7 +4,7 @@ An open-source library for Grand Theft Auto San Andreas multiplayer query mechan
 
 Opcodes supported
 -----------------
-JSA-MP currently supports 4 opcodes:  
+JSA-MP currently supports 4 opcodes:	  
 *  **Manage your website easily**
 
 	`FaabBB` 3 provides some website management plugins that makes
