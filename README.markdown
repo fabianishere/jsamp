@@ -3,11 +3,11 @@ JSA-MP
  
 Introduction:
 ---------------------------------
-JSA-MP is an open-source library for GTA San andreas Multiplayer Query mechanism.
+JSA-MP is an open-source library for Grand Theft Auto San Andreas multiplayer query mechanism.
 
 Opcodes supportes
 ---------------------------------
-JSA-MP currently supports 4 opcodes:
+JSA-MP currently supports 4 opcodes:  
 * INFO 
 * RULES
 * CLIENT_LIST 
@@ -15,5 +15,5 @@ JSA-MP currently supports 4 opcodes:
 
 Requirements
 ---------------------------------
-JSA-MP requires:
+JSA-MP requires:  
 * JBoss' Netty.
