@@ -8,12 +8,12 @@ JSA-MP is an open-source library for Grand Theft Auto San Andreas multiplayer qu
 Opcodes supportes
 ---------------------------------
 JSA-MP currently supports 4 opcodes:  
- * INFO   
- * RULES  
- * CLIENT_LIST    
- * DETAILED_PLAYER_INFO   
+* **INFO**
+* **RULES**  
+* **CLIENT_LIST**    
+* **DETAILED_PLAYER_INFO**   
 
 Requirements
 ---------------------------------
 JSA-MP requires:  
- * JBoss' Netty.  
+ * **JBoss' Netty.**  
