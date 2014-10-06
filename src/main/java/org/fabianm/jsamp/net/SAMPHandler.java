@@ -1,4 +1,4 @@
-package org.faabtech.jsamp.net;
+package org.fabianm.jsamp.net;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;

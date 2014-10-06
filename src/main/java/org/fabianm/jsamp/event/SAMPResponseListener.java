@@ -1,6 +1,6 @@
-package org.faabtech.jsamp.event;
+package org.fabianm.jsamp.event;
 
-import org.faabtech.jsamp.data.DataProvider;
+import org.fabianm.jsamp.data.DataProvider;
 
 public interface SAMPResponseListener {
 

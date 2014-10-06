@@ -1,13 +1,11 @@
-package org.faabtech.jsamp;
+package org.fabianm.jsamp;
 
-import org.faabtech.jsamp.SAMPRequest.Opcode;
-import org.faabtech.jsamp.data.DataProvider;
-import org.faabtech.jsamp.data.impl.InfoDataProvider;
-import org.faabtech.jsamp.data.impl.RuleDataProvider;
-import org.faabtech.jsamp.event.SAMPResponseListener;
-import org.faabtech.jsamp.exception.MalformedIpException;
-import org.faabtech.jsamp.net.Client;
-import org.faabtech.jsamp.server.Rule;
+import org.fabianm.jsamp.SAMPRequest.Opcode;
+import org.fabianm.jsamp.data.DataProvider;
+import org.fabianm.jsamp.data.impl.RuleDataProvider;
+import org.fabianm.jsamp.event.SAMPResponseListener;
+import org.fabianm.jsamp.net.Client;
+import org.fabianm.jsamp.server.Rule;
 
 /**
  * Example class.
@@ -17,12 +15,11 @@ import org.faabtech.jsamp.server.Rule;
 public class Example {
 
 	public static void main(String[] args) {
-		Client client = new Client("188.165.252.63", 7852);
+		Client client = new Client("93.119.30.66", 7777);
 		SAMPRequest request = new SAMPRequest(client, Opcode.RULES);
 		try {
 			request.send(new SAMPResponseListener() {
 
-				@Override
 				public void messageReceived(DataProvider dataProvider) {
 					RuleDataProvider ruleDataProvider = (RuleDataProvider) dataProvider;
 

@@ -1,4 +1,4 @@
-package org.faabtech.jsamp.server;
+package org.fabianm.jsamp.server;
 
 /**
  * Represents a server rule.

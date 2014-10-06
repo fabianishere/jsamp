@@ -1,4 +1,4 @@
-package org.faabtech.jsamp.event;
+package org.fabianm.jsamp.event;
 
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.MessageEvent;

@@ -1,19 +1,18 @@
-package org.faabtech.jsamp;
+package org.fabianm.jsamp;
 
 import java.util.logging.Logger;
 
-import org.faabtech.jsamp.data.DataProvider;
-import org.faabtech.jsamp.data.impl.ClientListDataProvider;
-import org.faabtech.jsamp.data.impl.InfoDataProvider;
-import org.faabtech.jsamp.data.impl.PlayerDataProvider;
-import org.faabtech.jsamp.data.impl.RuleDataProvider;
-import org.faabtech.jsamp.event.MessageListener;
-import org.faabtech.jsamp.event.SAMPResponseListener;
-import org.faabtech.jsamp.exception.MalformedIpException;
-import org.faabtech.jsamp.exception.NonSupportedOpcodeException;
-import org.faabtech.jsamp.net.Client;
-import org.faabtech.jsamp.server.Player;
-import org.faabtech.jsamp.server.Rule;
+import org.fabianm.jsamp.data.impl.ClientListDataProvider;
+import org.fabianm.jsamp.data.impl.InfoDataProvider;
+import org.fabianm.jsamp.data.impl.PlayerDataProvider;
+import org.fabianm.jsamp.data.impl.RuleDataProvider;
+import org.fabianm.jsamp.event.MessageListener;
+import org.fabianm.jsamp.event.SAMPResponseListener;
+import org.fabianm.jsamp.exception.MalformedIpException;
+import org.fabianm.jsamp.exception.UnsupportedOpcodeException;
+import org.fabianm.jsamp.net.Client;
+import org.fabianm.jsamp.server.Player;
+import org.fabianm.jsamp.server.Rule;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelFuture;
@@ -22,7 +21,7 @@ import org.jboss.netty.channel.MessageEvent;
 /**
  * Represents a SAMP Server data request.
  * 
- * For more info about the query mechanism, go to 
+ * For more info about the query mechanism, please visit
  * 	<a href="http://wiki.sa-mp.com/wiki/Query_Mechanism">http://wiki.sa-mp.com/wiki/Query_Mechanism</a>
  * 
  * @author Fabian M.
@@ -77,7 +76,6 @@ public class SAMPRequest {
 	public void send(final SAMPResponseListener listener) throws Exception {
 		this.client.connect(new MessageListener() {
 
-			@Override
 			public void send(ChannelFuture future) throws MalformedIpException {
 				ChannelBuffer buf = ChannelBuffers.buffer(26);
 				/**
@@ -137,8 +135,7 @@ public class SAMPRequest {
 					future.getChannel().write(buf);
 			}
 
-			@Override
-			public void get(MessageEvent e) throws NonSupportedOpcodeException {
+			public void get(MessageEvent e) throws UnsupportedOpcodeException {
 				if (!(e.getMessage() instanceof ChannelBuffer))
 					return;
 				ChannelBuffer buf = (ChannelBuffer) e.getMessage();
@@ -334,7 +331,7 @@ public class SAMPRequest {
 					listener.messageReceived(new PlayerDataProvider(players));
 					break;
 				default:
-					throw new NonSupportedOpcodeException();
+					throw new UnsupportedOpcodeException();
 				}
 			}
 

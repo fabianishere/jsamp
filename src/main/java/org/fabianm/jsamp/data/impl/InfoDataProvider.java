@@ -1,6 +1,6 @@
-package org.faabtech.jsamp.data.impl;
+package org.fabianm.jsamp.data.impl;
 
-import org.faabtech.jsamp.data.DataProvider;
+import org.fabianm.jsamp.data.DataProvider;
 
 /**
  * The {@link DataProvider} for the info opcode.

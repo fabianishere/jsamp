@@ -1,4 +1,4 @@
-package org.faabtech.jsamp.data;
+package org.fabianm.jsamp.data;
 
 /**
  * Blueprint for query DataProvider.

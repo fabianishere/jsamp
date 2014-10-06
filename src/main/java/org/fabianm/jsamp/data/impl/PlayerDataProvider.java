@@ -1,7 +1,7 @@
-package org.faabtech.jsamp.data.impl;
+package org.fabianm.jsamp.data.impl;
 
-import org.faabtech.jsamp.data.DataProvider;
-import org.faabtech.jsamp.server.Player;
+import org.fabianm.jsamp.data.DataProvider;
+import org.fabianm.jsamp.server.Player;
 
 /**
  * The {@link DataProvider} for the DETAILED_PLAYER_INFO opcode.

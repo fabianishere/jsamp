@@ -1,30 +1,20 @@
-package org.faabtech.jsamp.net;
+package org.fabianm.jsamp.net;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
-import org.faabtech.jsamp.event.MessageListener;
-import org.faabtech.jsamp.exception.MalformedIpException;
-import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.fabianm.jsamp.event.MessageListener;
+
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap;
 import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory;
 
 /**
- * Our seperate intance of the 'Client', not directly related to jBoss Netty
- * NIO.
+ * Our seperate intance of the 'Client', not directly related to jBoss Netty NIO.
  * 
  * @author Fabian M.
  */
 public class Client {
-
-	/**
-	 * The logging instance.
-	 */
-	private static Logger logger = Logger.getLogger(Client.class.getName());
 
 	/**
 	 * The address used for connecting.
